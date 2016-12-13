@@ -81,12 +81,6 @@ class BlackJackGame(Deck):
         self.player = player
         self.deck = Deck(self.config, self.cards_config)
 
-        #Recorded sequences of the game for future optimizations of value functions.
-        self.player.inputs = []
-        self.player.actions = []
-        self.player.outputs = []
-        self.player.rewards = []
-
         while self.player.current_stake > 0:
             #New deck and new counts if threshold is reached
             if len(self.deck.cards) < 52 * self.config.nb_decks * (1 - self.config.shuffling):
