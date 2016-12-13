@@ -16,10 +16,10 @@ class BlackJackPlayer():
         self.stakes = []
 
         #Recorded sequences of the game for future optimizations of value functions.
-        self.player.inputs = []
-        self.player.actions = []
-        self.player.outputs = []
-        self.player.rewards = []
+        self.inputs = []
+        self.actions = []
+        self.outputs = []
+        self.rewards = []
 
     def reset_stake(self):
         self.current_stake = self.config.current_stake
