@@ -145,7 +145,7 @@ class SARSA_RLPlayer(BlackJackPlayer):
 
 
 class Linear_RLPlayer(BlackJackPlayer):
-    '''RL Player using TD(0) SARSA algorithm with a linear value function approximation.'''
+    '''RL Player using TD(0) Q-Learning algorithm with a linear value function approximation.'''
     def __init__(self, session, config, cards_config):
         BlackJackPlayer.__init__(self, session, config, cards_config)
         self.vfa_config = VFAConfig()
@@ -193,7 +193,7 @@ class Linear_RLPlayer(BlackJackPlayer):
 
 
 class Deep_RLPlayer(BlackJackPlayer):
-    '''RL Player using TD(0) SARSA algorithm with a Deep Q-Network as value function approximation.'''
+    '''RL Player using TD(0) Q-Learning algorithm with a Deep Q-Network as value function approximation.'''
     def __init__(self, session, config, cards_config):
         BlackJackPlayer.__init__(self, session, config, cards_config)
         self.vfa_config = VFAConfig()
