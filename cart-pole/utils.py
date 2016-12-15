@@ -3,10 +3,11 @@ import tensorflow as tf
 class VFAConfig(object):
     state_dim = 4
     action_space = [0, 1]
-    lr = 1e-4
+    lr = 1e-3
     discount = 1
-    alpha_reg = 0
-    beta_reg = 0
+    alpha_reg = 1e-3
+    beta_reg = 1e-3
+    nb_steps = 5
 
 class ValueFunctionApproximation():
     '''Base class for value Function Approximation. Shouldn't be used separately.'''
@@ -57,8 +58,11 @@ class ValueFunctionApproximation():
         return output, reg_l1, reg_l2
 
     def add_loss_op(self, inputs):
-        loss = tf.nn.l2_loss(self.reward_placeholder + self.vfa_config.discount * self.output_placeholder - inputs) \
-            + self.vfa_config.alpha_reg * self.reg_l1 + self.vfa_config.beta_reg * self.reg_l2
+        loss = tf.nn.l2_loss(self.reward_placeholder \
+                             + (self.vfa_config.discount ** self.vfa_config.nb_steps) * self.output_placeholder \
+                                - inputs) \
+               + self.vfa_config.alpha_reg * self.reg_l1 \
+               + self.vfa_config.beta_reg * self.reg_l2
         tf.add_to_collection('total_loss', loss)
         total_loss = tf.add_n(tf.get_collection('total_loss'))
         return total_loss
