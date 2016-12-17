@@ -8,7 +8,8 @@ from utils import VFAConfig, ValueFunctionApproximation
 class Config():
     nb_steps = 10
     #Optimization parameters
-    minibatch_size = 1000
+    minibatch_size = 32
+    update_frequency = 300
     epsilon = lambda self, x: 1/(1+x)
 
 class Player():
@@ -63,6 +64,9 @@ class Player():
                 np.array(terminal_states)[ids],
                 np.array(self.rewards)[ids])
 
+    def update_target_network(self, session):
+        self.vfa.update_target_weights(session)
+
     def decide_action(self, session, inputs):
         self.nb_actions += 1
 
@@ -100,8 +104,11 @@ if __name__=='__main__':
 
                 if len(player.temp_rewards) >= player.config.nb_steps:
                     player.collect_replay_data()
-                
+
                 player.update_value_function(session)
+                
+                if player.nb_actions % player.config.update_frequency == 0:
+                    player.update_target_network(session)
 
                 if done:
                     while len(player.temp_rewards) > 0:
