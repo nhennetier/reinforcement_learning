@@ -54,7 +54,7 @@ class Player():
 
     def update_value_function(self, session):
         if len(self.rewards) > 0:
-            terminal_states = [int(x==0) for x in self.rewards]
+            terminal_states = [int(x<0) for x in self.rewards]
             ids = np.random.choice(len(self.rewards), self.config.minibatch_size)
             self.vfa.run_batch(session,
                 np.array(self.inputs)[ids],
