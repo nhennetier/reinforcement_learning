@@ -3,7 +3,7 @@ import tensorflow as tf
 class VFAConfig(object):
     state_dim = 4
     action_space = [0, 1]
-    lr = 1e-2
+    lr = 1e-3
     discount = .99
     alpha_reg = 1e-3
     beta_reg = 1e-3

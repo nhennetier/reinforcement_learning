@@ -10,9 +10,15 @@ class Config():
     #Optimization parameters
     minibatch_size = 32
     update_frequency = 300
+    max_replay_data = 10000
+    #Exploration parameter (epsilon-greedy policy)
     epsilon = lambda self, x: 1/(1+x)
 
 class Player():
+    '''AI for the "Moutain Car" problem.
+    Epsilon-greedy policy wrt an approximated value function (Deep Neural Network).
+    DNN updated with SGD using the experience replay method.
+    Usage of a n-step Q-Learning loss function.'''
     def __init__(self, config):
         self.config = config
         self.vfa_config = VFAConfig()
@@ -39,6 +45,12 @@ class Player():
         self.temp_inputs = self.temp_inputs[1:]
         self.temp_actions = self.temp_actions[1:]
         self.temp_rewards = self.temp_rewards[1:]
+
+    def resize_replay_data(self):
+        self.inputs = self.inputs[-self.config.max_replay_data:]
+        self.actions = self.actions[-self.config.max_replay_data:]
+        self.outputs = self.outputs[-self.config.max_replay_data:]
+        self.rewards = self.rewards[-self.config.max_replay_data:]
 
     def collect_temp_data(self, state, action, reward):
         self.temp_inputs.append(state)
@@ -104,6 +116,7 @@ if __name__=='__main__':
 
                 if len(player.temp_rewards) >= player.config.nb_steps:
                     player.collect_replay_data()
+                    player.resize_replay_data()
 
                 player.update_value_function(session)
                 
